@@ -12,11 +12,12 @@ myPhone = SP(r"C:\Users\___\platform-tools")
 ```
 4. Use all fonctions !!!
 
-| Function  | Arguments                | Description                                                      |
-|-----------|--------------------------|------------------------------------------------------------------|
-| Press     | (int)x, (int)y           | TouchScreen at x, y position                                     |
-| LongPress | (int)x, (int)y, (int)d   | Press the screen in (x, y) for d milliseconds                    |
-| Swipe     | x1, y1, x2, y2, duration | Swipe the screen from (x1, y1) to (x2, y2) during d milliseconds |
+| Function       | Arguments                | Description                                                      |
+|----------------|--------------------------|------------------------------------------------------------------|
+| Press          | (int)x, (int)y           | TouchScreen at x, y position                                     |
+| LongPress      | (int)x, (int)y, (int)d   | Press the screen in (x, y) for d milliseconds                    |
+| Swipe          | x1, y1, x2, y2, duration | Swipe the screen from (x1, y1) to (x2, y2) during d milliseconds |
+| TakeScreenshot | ø                        | Take a screenshot and return image as PIL.Image                  |
 
 ## Sources
 * [Download ADB](https://www.frandroid.com/android/rom-custom-2/403222_comment-telecharger-les-outils-adb-et-fastboot-sur-windows-macos-et-linux)

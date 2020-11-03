@@ -1,23 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+import time
 from ADBLib import SmartPhone as SP
 
-# Tu initialise ta variable avec comme seul argument le chemin vers ton ADB
 myPhone = SP(r"C:\Users\Geremindows\Downloads\platform-tools")
-
-myPhone.Slide(50, 500, 500, 1000, 1000)
-
-# Pour effectuer une pression :
-#myPhone.Press(500, 500)
-
-
-
-# Pour faire une capture d'écran et l'ouvrir
-#myPhone.TakeScreenshot().show()
-
-
-
-# Sinon, pour l'utiliser tu peux faire qqchose comme
-#with myPhone.TakeScreenshot() as img:
-#    print(img)
+myPhone.Press(50, 500)
