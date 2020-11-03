@@ -19,6 +19,20 @@ myPhone = SP(r"C:\Users\___\platform-tools")
 | Swipe          | x1, y1, x2, y2, duration | Swipe the screen from (x1, y1) to (x2, y2) during d milliseconds |
 | TakeScreenshot | ø                        | Take a screenshot and return image as PIL.Image                  |
 
+## Example
+
+```Python
+from ADBLib import SmartPhone as SP
+
+myPhone = SP("path_to_ADB")
+
+myPhone.Press(500, 800) # Press screen in (500, 800)
+myPhone.TakeScreenshot().show() # Take Screenshot and show it
+with myPhone.TakeScreenshot() as img:
+    # Here, img is a PIL.Image format
+    print(img.size)
+```
+
 ## Sources
 * [Download ADB](https://www.frandroid.com/android/rom-custom-2/403222_comment-telecharger-les-outils-adb-et-fastboot-sur-windows-macos-et-linux)
 * [ADB Commands Source 1 (medium.com)](https://medium.com/@minamimunakata/how-to-take-a-screenshot-on-android-with-adb-on-windows-pc-d52f7603b1d2)
