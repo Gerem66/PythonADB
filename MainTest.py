@@ -6,7 +6,7 @@ from ADBLib import SmartPhone as SP
 # Tu initialise ta variable avec comme seul argument le chemin vers ton ADB
 myPhone = SP(r"C:\Users\Geremindows\Downloads\platform-tools")
 
-
+myPhone.Slide(50, 500, 500, 1000, 1000)
 
 # Pour effectuer une pression :
 #myPhone.Press(500, 500)

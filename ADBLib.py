@@ -15,6 +15,12 @@ class SmartPhone(object):
             return
         os.system(self.ADB_PATH + "adb shell input tap {} {}".format(x, y))
 
+    def LongPress(self, x, y, duration):
+        self.Swipe(x, y, x, y, duration)
+    
+    def Swipe(self, x1, y1, x2, y2, duration):
+        os.system("{}adb shell input touchscreen swipe {} {} {} {} {}".format(self.ADB_PATH, x1, y1, x2, y2, duration))
+
     def TakeScreenshot(self):
         os.system(self.ADB_PATH + "adb shell screencap -p " + self.PIC_PATH)
         os.system(self.ADB_PATH + "adb pull {} screen.jpg".format(self.PIC_PATH))
