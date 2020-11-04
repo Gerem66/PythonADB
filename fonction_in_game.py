@@ -1,6 +1,8 @@
 import cv2 as cv
 import numpy as np
 from PogoADBLib import SmartPhone as SP
+from PIL import Image
+from numpy import asarray
 
 def reco_pkm(image_in): # fonction qui prend en entrée une image de la map et en ressort avec une image modifiée ou les pokemons sont en noirs.
 
