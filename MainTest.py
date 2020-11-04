@@ -5,4 +5,5 @@ import time
 from ADBLib import SmartPhone as SP
 
 myPhone = SP(r"C:\Users\Geremindows\Downloads\platform-tools")
-myPhone.Press(50, 500)
+myPhone.Press(100, 800)
+#myPhone.WriteText("heyyy !")

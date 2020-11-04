@@ -14,6 +14,9 @@ myPhone = SP(r"C:\Users\___\platform-tools")
 
 | Function       | Arguments                | Description                                                      |
 |----------------|--------------------------|------------------------------------------------------------------|
+| SmartPhone     | ADB Path [, index = 0]   | Open ADB and select device, default selected device : 0          |
+| GetDevices     | ø                        | Get all devices name                                             |
+| SetDevice      | (int) index              | Select an other device                                           |
 | Press          | (int)x, (int)y           | TouchScreen at x, y position                                     |
 | LongPress      | (int)x, (int)y, (int)d   | Press the screen in (x, y) for d milliseconds                    |
 | Swipe          | x1, y1, x2, y2, duration | Swipe the screen from (x1, y1) to (x2, y2) during d milliseconds |
