@@ -3,8 +3,8 @@ def reco_pkm(image_in): # fonction qui prend en entrée une image de la map et e
     def mask_on(img,name,blue_1,green_1,red_1,blue_2,green_2,red_2): # fonction pour isoler une certaine brochette de couleur 
         lower_range = np.array([blue_1,green_1,red_1])  # Set the Lower range value of color in BGR
         upper_range = np.array([blue_2,green_2,red_2])   # Set the Upper range value of color in BGR
-        #print(type(img), img.shape)
-        #print(type(lower_range), img.shape)
+        #print(type(img), img.shape) # pour bien voir que ca fait la meme taille et mm type
+        #print(type(lower_range), img.shape) # pour bien voir que ca fait la meme taille et mm type
         mask = cv.inRange(img,lower_range,upper_range) # Create a mask with range
         result = cv.bitwise_and(img,img,mask = mask)  # Performing bitwise and operation with mask in img variable
         cv.imwrite(name,result)
@@ -12,8 +12,8 @@ def reco_pkm(image_in): # fonction qui prend en entrée une image de la map et e
     # =============================================================================
     # On télécharge la premiere image et on applique plusieurs filtre dessus
     # =============================================================================
-    img = cv.imread(image_in) # on récupère le screenshot 
-    #img = image_in
+    
+    img = image_in
     print(type(img))
 
     mask_on(img,"test_green.jpg",100,200,80,210,255,200)     # On chope le vert 
