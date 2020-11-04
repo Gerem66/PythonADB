@@ -1,7 +1,8 @@
 # PythonADB
 
 ## Use
-1. Download this git, ADB and PIL (in sources)
+1. You must have this git project, Python, ADB and PIL (download links in sources)
+> Tested on Python3.8
 2. Include in project
 ```Python
 from ADBLib import SmartPhone as SP
