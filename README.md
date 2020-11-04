@@ -13,16 +13,16 @@ myPhone = SP(r"C:\Users\___\platform-tools")
 ```
 4. Use all fonctions !!!
 
-| Function           | Arguments                | Description                                                      |
-|--------------------|--------------------------|------------------------------------------------------------------|
-| SmartPhone (class) | ADB Path [, index = 0]   | Open ADB and select device, default selected device : 0          |
-| GetDevices         | ø                        | Get all devices name                                             |
-| SetDevice          | (int) index              | Select an other device                                           |
-| SetOffset          | (int)x, (int)x           | Add offset to calibrate functions                                |
-| Press              | (int)x, (int)y           | TouchScreen at x, y position                                     |
-| LongPress          | (int)x, (int)y, (int)d   | Press the screen in (x, y) for d milliseconds                    |
-| Swipe              | x1, y1, x2, y2, duration | Swipe the screen from (x1, y1) to (x2, y2) during d milliseconds |
-| TakeScreenshot     | ø                        | Take a screenshot and return image as PIL.Image                  |
+| Function           | Arguments (int)             | Description                                                      |
+|--------------------|-----------------------------|------------------------------------------------------------------|
+| SmartPhone (class) | (str)ADB Path [, index = 0] | Open ADB and select device, default selected device : 0          |
+| GetDevices         | ø                           | Get all devices name                                             |
+| SetDevice          | index                       | Select an other device                                           |
+| SetOffset          | x, x                        | Add offset to calibrate functions                                |
+| Press              | x, y                        | TouchScreen at x, y position                                     |
+| LongPress          | x, y [, d = 1000]           | Press the screen in (x, y) for d milliseconds                    |
+| Swipe              | x1, y1, x2, y2 [, d = 1000] | Swipe the screen from (x1, y1) to (x2, y2) during d milliseconds |
+| TakeScreenshot     | ø                           | Take a screenshot and return image as PIL.Image                  |
 
 ## Example
 
