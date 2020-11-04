@@ -1,3 +1,7 @@
+import cv2 as cv
+import numpy as np
+from PogoADBLib import SmartPhone as SP
+
 def reco_pkm(image_in): # fonction qui prend en entrée une image de la map et en ressort avec une image modifiée ou les pokemons sont en noirs.
 
     def mask_on(img,name,blue_1,green_1,red_1,blue_2,green_2,red_2): # fonction pour isoler une certaine brochette de couleur 
