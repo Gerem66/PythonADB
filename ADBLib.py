@@ -39,8 +39,11 @@ class SmartPhone(object):
             self.Error("Wrong device index")
         self.CURR_DEV = index
 
-    def ADB(self, arg):
-        os.system("{}adb -s {} {}".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], arg))
+    def ADB(self, arg, sync = True):
+        if not sync:
+            os.popen("{}adb -s {} {}".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], arg))
+        else:
+            os.system("{}adb -s {} {}".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], arg))
 
 
 
@@ -69,6 +72,10 @@ class SmartPhone(object):
         os.remove(self.TMP_IMG)
         return img
     
+    def TakeScreenshotWithPress(self, x, y):
+        self.ADB("shell input touchscreen swipe {} {} {} {} {}".format(x + self.offset_x, y + self.offset_y, x + self.offset_x, y + self.offset_y, 500), False)
+        time.sleep(0.6)
+        return self.TakeScreenshot()
 
 
     # Errors

@@ -2,7 +2,7 @@
 
 ## Use
 1. You must have this git project, Python, ADB and PIL (download links in sources)
-> Tested on Python3.8
+> Tested on Python 3.8, Pillow 8.0.1, numpy 1.19.4
 2. Include in project
 ```Python
 from ADBLib import SmartPhone as SP
@@ -13,16 +13,18 @@ myPhone = SP(r"C:\Users\___\platform-tools")
 ```
 4. Use all fonctions !!!
 
-| Function           | Arguments (int)             | Description                                                      |
-|--------------------|-----------------------------|------------------------------------------------------------------|
-| SmartPhone (class) | (str)ADB Path [, index = 0] | Open ADB and select device, default selected device : 0          |
-| GetDevices         | ø                           | Get all devices name                                             |
-| SetDevice          | index                       | Select an other device                                           |
-| SetOffset          | x, x                        | Add offset to calibrate functions                                |
-| Press              | x, y                        | TouchScreen at x, y position                                     |
-| LongPress          | x, y [, d = 1000]           | Press the screen in (x, y) for d milliseconds                    |
-| Swipe              | x1, y1, x2, y2 [, d = 1000] | Swipe the screen from (x1, y1) to (x2, y2) during d milliseconds |
-| TakeScreenshot     | ø                           | Take a screenshot and return image as PIL.Image                  |
+| Function                | Arguments (int)             | Description                                                      |
+|-------------------------|-----------------------------|------------------------------------------------------------------|
+| SmartPhone (class)      | (str)ADB Path [, index = 0] | Open ADB and select device, default selected device : 0          |
+| GetDevices              | ø                           | Get all devices name                                             |
+| SetDevice               | index                       | Select an other device                                           |
+| SetOffset               | x, x                        | Add offset to calibrate functions                                |
+| Press                   | x, y                        | TouchScreen at x, y position                                     |
+| LongPress               | x, y [, d = 1000]           | Press the screen in (x, y) for d milliseconds                    |
+| Swipe                   | x1, y1, x2, y2 [, d = 1000] | Swipe the screen from (x1, y1) to (x2, y2) during d milliseconds |
+| WriteText               | text                        | Simulation of smatphone keyboard                                 |
+| TakeScreenshot          | ø                           | Take a screenshot and return image as PIL.Image                  |
+| TakeScreenshotWithPress | x, y                        | Touch screen, take a screenshot and return image as PIL.Image    |
 
 ## Example
 
