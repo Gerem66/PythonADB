@@ -3,7 +3,7 @@
 
 import os
 import time
-from PIL import Image
+import cv2
 
 class SmartPhone(object):
     def __init__(self, ADB_PATH, index = 0):
@@ -68,7 +68,7 @@ class SmartPhone(object):
         self.ADB("pull {} {}".format(self.PIC_PATH, self.TMP_IMG))
         self.ADB("shell rm " + self.PIC_PATH)
         time.sleep(0.1)
-        img = Image.open(self.TMP_IMG).copy()
+        img = cv2.imread(self.TMP_IMG).copy()
         os.remove(self.TMP_IMG)
         return img
     

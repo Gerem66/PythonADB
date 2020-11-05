@@ -1,6 +1,6 @@
 import cv2 as cv
 import numpy as np
-from PogoADBLib import SmartPhone as SP
+from ADBLib import SmartPhone as SP
 from PIL import Image
 from numpy import asarray
 
@@ -11,7 +11,7 @@ def reco_pkm(image_in): # fonction qui prend en entrée une image de la map et e
         upper_range = np.array(upper)   # Set the Upper range value of color in BGR
         #print(type(img), img.shape)
         #print(type(lower_range), img.shape)
-        mask = cv.inRange(img,lower_range,upper_range) # Create a mask with range
+        mask = cv.inRange(cv.cvtColor(img, cv.COLOR_BGR2HSV),lower_range,upper_range) # Create a mask with range
         result = cv.bitwise_and(img,img,mask = mask)  # Performing bitwise and operation with mask in img variable
         #cv.imwrite(name,result)
         return result
@@ -19,7 +19,8 @@ def reco_pkm(image_in): # fonction qui prend en entrée une image de la map et e
     # =============================================================================
     # On télécharge la premiere image et on applique plusieurs filtre dessus
     # =============================================================================
-    img = cv.imread(image_in) # on récupère le screenshot 
+    #img = cv.imread(image_in) # on récupère le screenshot 
+    img = np.array(image_in)
     #img = image_in
     print(type(img))
 
@@ -38,5 +39,5 @@ def reco_pkm(image_in): # fonction qui prend en entrée une image de la map et e
     cv.imwrite("all.jpg",img)
     
     
-    
-reco_pkm(asarray(myPhone.TakeScreenshot()))
+myPhone = SP(r"C:\Users\Geremindows\Downloads\platform-tools")
+reco_pkm(myPhone.TakeScreenshot())
