@@ -1,43 +1,226 @@
+# =============================================================================
+# Liste des fonctions opérationnelle pour Pokémon Go Bot
+# =============================================================================
 import cv2 as cv
 import numpy as np
-from ADBLib import SmartPhone as SP
-from PIL import Image
-from numpy import asarray
-
-def reco_pkm(image_in): # fonction qui prend en entrée une image de la map et en ressort avec une image modifiée ou les pokemons sont en noirs.
-
-    def mask_on(img,lower,upper): # fonction pour isoler une certaine brochette de couleur 
-        lower_range = np.array(lower)  # Set the Lower range value of color in BGR
-        upper_range = np.array(upper)   # Set the Upper range value of color in BGR
-        #print(type(img), img.shape)
-        #print(type(lower_range), img.shape)
-        mask = cv.inRange(cv.cvtColor(img, cv.COLOR_BGR2HSV),lower_range,upper_range) # Create a mask with range
-        result = cv.bitwise_and(img,img,mask = mask)  # Performing bitwise and operation with mask in img variable
-        #cv.imwrite(name,result)
-        return result
-        
-    # =============================================================================
-    # On télécharge la premiere image et on applique plusieurs filtre dessus
-    # =============================================================================
-    #img = cv.imread(image_in) # on récupère le screenshot 
-    img = np.array(image_in)
-    #img = image_in
-    print(type(img))
-
-    green = mask_on(img,(80,200,80),(220,255,200))     # On chope le vert 
-    grey = mask_on(img,(120,130,50),(190,200,130))    # On chope le gris 
-    yellow = mask_on(img,(130,200,145),(200,255,255))  # On chope le jaune 
+from PogoADBLib import SmartPhone as SP
+myPhone = SP(r".\platform-tools") # Chemin absolu ou relatif depuis ce script
 
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-    # =============================================================================
-    # On fusionne
-    # =============================================================================
+def is_approx(list_a, list_b,delta): # fonction qui regarde si deux listes sont approximativement identiques
+# a utiliser pour comparer des valeurs de pixels 
+    result = False 
+    if len(list_a) != len(list_b):
+        return False
+    for i in range(len(list_a)):
+            if list_b[i] >= list_a[i] - delta and list_b[i] <= list_a[i] + delta : 
+                result = True 
+            else : 
+                result = False 
+    return(result)
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+def is_approx_nbr(a,b,delta): # fonction qui regarde si deux nombres sont environ égaux 
+    result = False 
+    if b >= a - delta and b <= a + delta : 
+        result = True 
+    else : 
+        result = False 
+    return(result)   
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+def is_identical(list_a, list_b): # fonction qui regarde si deux listes sont identiques 
+    if len(list_a) != len(list_b):
+        return False
+    for i in list_a:
+        if i not in list_b:
+            return False
+    return True
+    
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+def check_cbt(img) : # fonction qui sert a checker si on est en combat ou non 
+    result = False 
+    if is_approx(img[260][100], [250, 250, 250],10) and is_approx(img[2000][120], [122, 73, 215],20) and is_approx(img[1980][950], [30, 50, 203],20) : 
+       result = True 
+    else : 
+        result = False 
+    return(result)
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def check_cercle() : # fonction qui permet de regarder ou est le cercle du pokemon
+
+    img = myPhone.TakeScreenshotWithPress(550,2000) 
+    img=img[300:1800,:]
+    img = mask_on(img,(140,180,160),(255,255,255))  # On chope l'anneau blanc
+    
+    output = img.copy()
+    img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+    # Find circles
+    circles = cv.HoughCircles(img, cv.HOUGH_GRADIENT, 1.3, 100)
+    # If some circle is found
+    if circles is not None:
+       # Get the (x, y, r) as integers
+       circles = np.round(circles[0, :]).astype("int")
+       print(type(circles))
+       # loop over the circles
+       for (x, y, r) in circles:
+          cv.circle(output, (x, y), r, (0, 255, 0), 2)
+    # show the output image
+    cv.imwrite("test.png",output)
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+def after_catch(img) : # fonction juste après avoir capturé un pokémon 
+    result = False 
+    # on regarde les 4 points autour de l'écran de résumé xp
+    if is_approx(img[800][100], [254, 255, 245],10) and is_approx(img[800][1000], [244, 255, 246]) : # 2 points du haut (toujours au même endroit)
+        if is_approx(img[1500][100], [244, 255, 245]) and is_approx(img[1500][1000], [235, 255, 238]) :  # 2 points du bas (changent de place des fois)
+        # on regarde deux points sur le bouton vert "ok"
+            if is_approx(img[1450][543], [157, 213, 114]) and is_approx(img[1500][543], [157, 213, 114]) : # 2 poits, changent de places des fois 
+                result=True
+    return(result)
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+def mask_on(img,lower,upper): # fonction pour isoler une certaine brochette de couleur 
+    lower_range = np.array(lower)  # Set the Lower range value of color in BGR
+    upper_range = np.array(upper)   # Set the Upper range value of color in BGR
+    mask = cv.inRange(img,lower_range,upper_range) # Create a mask with range
+    result = cv.bitwise_and(img,img,mask = mask)  # Performing bitwise and operation with mask in img variable
+    return result
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+def find_smth(img) : # fonction qui va trouver qqch si y'a un certain nombre de pixel noir a côté les uns des autres 
+    
+    def somme(liste) : # fonction qui sert a faire la somme de tous les éléments d'une liste 2 dimensions
+        total = 0
+        for row in range (len(liste)):
+            for col in range(len(liste[0])):
+                total = total + liste[row][col]
+        return(total)
+
+
+    gray=cv.cvtColor(img,cv.COLOR_BGR2GRAY) # on transforme les couleurs en nuances de gris 
+    
+    for i in range(len(gray)): # on parcoure toute l'image 
+        for j in range(len(gray[i])):
+            if gray[i][j] == 0 : # si le pixel est noir alors on va regarder des pixels aux alentours 
+                # trois possibilités d'alentours, un carré, ou deux rectangle (un plus long et un plus large)
+                # le carré fait 15*15 pixels et les rectangle font 20*11 ou 11*20
+                if (somme(gray[i:i+15,j:j+15].tolist())/len(gray[i:i+15,j:j+15])) <= 10 : # on regarde si la moyenne des pixels vaut moins de 10 (noir quoi)
+                    #print("carré ici",print(j,1079+i))
+                    return(j,1079+i)
+                elif (somme(gray[i:i+20,j:j+11].tolist())/len(gray[i:i+20,j:j+11])) <= 10 :
+                    #print("rectangle ici", print(j,1079+i))
+                    return(j,1079+i)
+                elif (somme(gray[i:i+11,j:j+20].tolist())/len(gray[i:i+11,j:j+20])) <= 10 :
+                    #print("rectangle ici", print(j,1079+i))
+                    return(j,1079+i)
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""rajouter un moyen de savoir quand c'est mode nuit"""
+"""régler le problème pour le faire venir d'un tableau et plus d'une vraie photo"""
+def map_mask_on(img):
+    img = img[1079:1878,:,:] # on récupère qu'une certaine partie de l'écran parce que l'écran en entier est inutile
+
+    green = mask_on(img,(80,200,80),(220,255,200))     # On chope le vert BGR
+    grey = mask_on(img,(120,130,50),(190,200,130))    # On chope le gris  BGR
+    yellow = mask_on(img,(130,200,145),(200,255,255))  # On chope le jaune BGR
+    
+    green_night = mask_on(img,(80,100,20),(220,180,130))     # On chope le vert BGR
+    grey_night = mask_on(img, (110,70,30),(200,130,160))  # On chope le gris BGR
+    yellow_night = mask_on(img,(110,130,140),(220 ,210,240))  # On chope le jaune BGR
       
     img = cv.addWeighted(green, 1, grey, 1, 0) # fusion de deux images 
-    img = cv.addWeighted(img, 1, yellow, 1, 0) 
-    cv.imwrite("all.jpg",img)
+    img = cv.addWeighted(img, 1, yellow, 1, 0) # image avec les filtres 
+    return(img)
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+def ecran_jeu(image) : # fonction disant si on est sur l'écran de jeu ou non 
+    result = False 
+    image = image[1778:,329:774,:] # on découpe un zone en bas de l'écran 
+    image=cv.cvtColor(image,cv.COLOR_BGR2GRAY) # on transforme les couleurs en nuances de gris 
+    for i in range(70,len(image))[::4] : # on parcoure toutes les couleurs de pixels 
+        for j in range(len(image[i]))[::5]:
+            if is_approx_nbr(image[i][j],255,5) : # on cherche un pixel blanc 
+                if is_approx_nbr(image[i-70][j],118,5) : # on cherche un pixel rouge 
+                    if is_approx_nbr(image[i-35][j],185,5) : # on cherche un pixel gris 
+                        result = True 
+    return(result)
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def decide_action(): # fonction qu'on fera tourner maintenant, décide ce qu'on fait à quel moment en fonction des actions précédentes 
+
+
+
+    Alive = True
+    while Alive:
+        try : 
+            img = myPhone.TakeScreenshot() # on prend un screenshot d'abord
+        
+            if ecran_jeu(img) : # si on est sur l'écran de jeu
+                print("écran du jeu")
+                x,y = (find_smth(map_mask_on(img))) # alors on cherche un pokémon 
+                myPhone.Press(x,y) # et on clique dessus 
+                myPhone.Press(15+x,15+y) # et on clique dessus 
+                
+            if check_cbt(img) : # on regarde si on est bien en combat 
+                print("en combat")
+
+        except KeyboardInterrupt:
+            Alive = False
     
-    
-myPhone = SP(r"C:\Users\Geremindows\Downloads\platform-tools")
-reco_pkm(myPhone.TakeScreenshot())
+decide_action()
