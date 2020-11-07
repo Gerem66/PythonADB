@@ -1,6 +1,6 @@
 from fonction_pogo import *
 
-from PogoADBLib import SmartPhone as SP
+from ADBLib import SmartPhone as SP
 
 
 myPhone = SP(r".\platform-tools") # Chemin absolu ou relatif depuis ce script
