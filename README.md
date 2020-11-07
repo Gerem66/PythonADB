@@ -27,7 +27,6 @@ myPhone = SP(r"C:\Users\___\platform-tools")
 | TakeScreenshotWithPress | x, y                        | Touch screen, take a screenshot and return image as CV2 Image    |
 
 ## Example
-
 ```Python
 from ADBLib import SmartPhone as SP
 
@@ -40,6 +39,7 @@ with myPhone.TakeScreenshot() as img:
     print(img.size)
     ...
 ```
+
 ## To Do 
 * pokestop
 * repenser manière capter pokemon OU revoir filtre
@@ -51,9 +51,6 @@ with myPhone.TakeScreenshot() as img:
 * montgolfiere team rocket
 * combat team rocket
 * pokemon pas au centre terrain swipe 3 temps
-
-
-
 
 ## Sources
 * [Download ADB](https://www.frandroid.com/android/rom-custom-2/403222_comment-telecharger-les-outils-adb-et-fastboot-sur-windows-macos-et-linux)
