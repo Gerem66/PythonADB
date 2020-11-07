@@ -56,7 +56,7 @@ class SmartPhone(object):
         self.ADB("shell input tap {} {}".format(x + self.offset_x, y + self.offset_y))
 
     def LongPress(self, x, y, duration = 1000):
-        self.Swipe([[x, y], [x, y]], duration)
+        self.Swipe(x, y, x, y, duration)
     
     def Swipe(self, x1, y1, x2, y2, duration = 1000):
         self.CheckType([x1, x2, y1, y2, duration], int)
