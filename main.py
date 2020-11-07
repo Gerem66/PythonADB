@@ -1,4 +1,4 @@
-from fonction_pogo import *
+from fonction_in_game import *
 
 from ADBLib import SmartPhone as SP
 

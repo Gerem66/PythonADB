@@ -7,11 +7,11 @@ from PogoADBLib import SmartPhone as SP
 import time
 myPhone = SP(r".\platform-tools") # Chemin absolu ou relatif depuis ce script
 
-"""revoir filtre"""
+
 """pokestop"""
-"""perso milieu enlevé"""
+"""repenser manière capter pokemon OU revoir filtre"""
+"""enlever le personnage pour pas appuyer dessus"""
 """rond blanc capture nuit"""
-"""enlever les pixels qui représentent le joueur"""
 """rajouter un moyen de savoir quand c'est mode nuit"""
 """filtrer cercle couleur pour déterminer quel ball prendre"""
 """encens fait beuger les filtres"""
@@ -19,6 +19,7 @@ myPhone = SP(r".\platform-tools") # Chemin absolu ou relatif depuis ce script
 """combat team rocket"""
 """pokemon pas au centre terrain"""
 
+"""on teste un truc"""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
