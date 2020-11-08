@@ -3,16 +3,16 @@ from fonction_in_game import *
 from ADBLib import SmartPhone as SP
 
 
-myPhone = SP(r".\platform-tools") # Chemin absolu ou relatif depuis ce script
+myPhone = SP(r"..\platform-tools") # Chemin absolu ou relatif depuis ce script
 lec_iv = True # variable disant si on lis des IV ou non 
 transfert = True # variable disant si on transfert des pokémons ou non 
 cran_etoile = 3 # variable donnant le cran a partir duquel les pokémons a trop bas IV sont relachés 
-pkm_event = False # variable servant a dire si on veut relacher les pokémons event qu'on vient d'attraper 
+pkm_event = True # variable servant a dire si on veut relacher les pokémons event qu'on vient d'attraper 
 Alive = True
 while Alive:
     try : 
         img = myPhone.TakeScreenshot() # on prend un screenshot d'abord
-    
+        time.sleep(0.5)
         if ecran_jeu(img) : # si on est sur l'écran de jeu
             print("écran du jeu")
             x,y = (find_smth(map_mask_on(img))) # alors on cherche un pokémon 
@@ -26,7 +26,7 @@ while Alive:
             
         if after_catch(img):
             print("attrapé")
-            myPhone.Press(543,1500) # et on clique dessus 
+            #myPhone.Press(543,1500) # et on clique dessus 
             # rajouter le fait de presser les coordonnées pour appuer sur bouton OK
             
         if fiche_pkm(img) : 
@@ -35,14 +35,26 @@ while Alive:
                 print("on veut lire l'iv")
                 etoile = lecture_IV()
             if transfert and lec_iv : # on relache les pokémon en fonction de leur iv
-                print("on veut transferer le pokemon car il a ",etoile)
-                relache(cran_etoile,etoile)
+                print("on veut peut etre le transferer le pokemon car il a ",etoile)
+                relache(cran_etoile,etoile,pkm_event)
             if transfert and not lec_iv : # on relache les pokemons peut importe leur IV 
                 print("on transfère peut importe l'IV")
                 relache()
             #myPhone.Press(540,2080)
             # finir fonction et rajouter clic 
-
+        
+        if on_pkstop(img): 
+            print("sur un pokestop")
+            cv.imwrite('pokestop.png',img)
+            pokestop()
+        
+        if level_up(img):
+            print("level up")
+            quit_lvl_up()
+            
+        #myPhone.Press(540,2080)
+        #myPhone.Press(540,2080)
+        time.sleep(0.5)
     except KeyboardInterrupt:
         Alive = False
 

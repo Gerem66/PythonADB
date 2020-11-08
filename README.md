@@ -51,6 +51,7 @@ with myPhone.TakeScreenshot() as img:
 * montgolfiere team rocket
 * combat team rocket
 * pokemon pas au centre terrain swipe 3 temps
+* revoir méthode pour rond blanc (gérem a une idée mais il veut pas la dire wesh mdrrr)
 
 
 

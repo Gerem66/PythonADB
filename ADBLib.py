@@ -69,6 +69,7 @@ class SmartPhone(object):
         self.ADB("shell rm " + self.PIC_PATH)
         time.sleep(0.1)
         img = cv2.imread(self.TMP_IMG).copy()
+        cv2.imwrite("photo_moment.png",img)
         os.remove(self.TMP_IMG)
         return img
     

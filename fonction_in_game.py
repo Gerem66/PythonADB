@@ -3,14 +3,15 @@
 # =============================================================================
 import cv2 as cv
 import numpy as np
-from PogoADBLib import SmartPhone as SP
+from ADBLib import SmartPhone as SP
 import time
-myPhone = SP(r".\platform-tools") # Chemin absolu ou relatif depuis ce script
+myPhone = SP(r"..\platform-tools") # Chemin absolu ou relatif depuis ce script
 
 
-"""pokestop"""
-"""repenser manière capter pokemon OU revoir filtre"""
-"""enlever le personnage pour pas appuyer dessus"""
+"""revoir findsmth"""
+"""revoir filtre jour"""
+"""mettre filtre bleu detection pokestop"""
+"""mettre filtre 3 couleurs detection arene"""
 """rond blanc capture nuit"""
 """rajouter un moyen de savoir quand c'est mode nuit"""
 """filtrer cercle couleur pour déterminer quel ball prendre"""
@@ -19,7 +20,7 @@ myPhone = SP(r".\platform-tools") # Chemin absolu ou relatif depuis ce script
 """combat team rocket"""
 """pokemon pas au centre terrain"""
 
-"""on teste un truc"""
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -30,10 +31,10 @@ def is_approx(list_a, list_b,delta): # fonction qui regarde si deux listes sont 
     if len(list_a) != len(list_b):
         return False
     for i in range(len(list_a)):
-            if list_b[i] >= list_a[i] - delta and list_b[i] <= list_a[i] + delta : 
-                result = True 
-            else : 
-                result = False 
+        if list_b[i] >= list_a[i] - delta and list_b[i] <= list_a[i] + delta : 
+            result = True 
+        else : 
+            return(False)
     return(result)
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -79,7 +80,7 @@ def check_circle() : # fonction qui permet de regarder ou est le cercle du pokem
     (x,y) = (0,0)
     while x==0 and y == 0 : # tant qu'on a pas la valeur du centre du cercle 
         img = myPhone.TakeScreenshotWithPress(550,2000) 
-        cv.imwrite("test_rond_blanc.png",img)
+        #cv.imwrite("test_rond_blanc.png",img)
         img=img[300:1800,:]
         """
         img = mask_on(img,(140,160,160),(255,255,255))  # On chope l'anneau blanc
@@ -98,7 +99,7 @@ def check_circle() : # fonction qui permet de regarder ou est le cercle du pokem
            # loop over the circles
            for (x, y, r) in circles:
               cv.circle(output, (x, y), r, (0, 255, 0), 2)
-        cv.imwrite("test.png",output)
+        #cv.imwrite("test.png",output)
     return(int(x),int(y+300)) # on retourne le centre du cercle 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -166,6 +167,7 @@ def fiche_pkm(img) : # fonction qui regarde si on est sur la fiche pokemon
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def lecture_IV(): # fonction qui permet de lire les IV du pokémon
     etoile = 0
+    time.sleep(0.4) # on attend un peu histoire que les options apparaissent 
     myPhone.Press(930,2100) # on appui sur le bouton avec 3 barres 
     time.sleep(0.2) # on attend un peu histoire que les options apparaissent 
     myPhone.Press(826,1666) # on clique sur évaluer 
@@ -212,7 +214,8 @@ def relache(cran_etoile=-1, etoile=-2,pkm_event = False): # fonction qui permet 
             else : 
                 print(img[900][90],img[900][1000],img[1440][90],img[1440][1000])
         
-
+    else : 
+        myPhone.Press(540,2050) # on clique sur ok
         
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -229,7 +232,7 @@ def mask_on(img,lower,upper): # fonction pour isoler une certaine brochette de c
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""enlever les pixels qui représentent le joueur"""
+
 def find_smth(img) : # fonction qui va trouver qqch si y'a un certain nombre de pixel noir a côté les uns des autres 
     
     def somme(liste) : # fonction qui sert a faire la somme de tous les éléments d'une liste 2 dimensions
@@ -241,7 +244,7 @@ def find_smth(img) : # fonction qui va trouver qqch si y'a un certain nombre de 
 
 
     gray=cv.cvtColor(img,cv.COLOR_BGR2GRAY) # on transforme les couleurs en nuances de gris 
-    
+    cv.imwrite("image_grise.png",gray)
     for i in range(len(gray)): # on parcoure toute l'image 
         for j in range(len(gray[i])):
             if gray[i][j] == 0 : # si le pixel est noir alors on va regarder des pixels aux alentours 
@@ -264,20 +267,49 @@ def find_smth(img) : # fonction qui va trouver qqch si y'a un certain nombre de 
 """rajouter un moyen de savoir quand c'est mode nuit"""
 def map_mask_on(img):
     img = img[1079:1878,:,:] # on récupère qu'une certaine partie de l'écran parce que l'écran en entier est inutile
-    
-    
+    cv.imwrite("photo_avant_filtre.png",img)
+    """
     green = mask_on(img,(80,200,80),(220,255,200))     # On chope le vert BGR
     grey = mask_on(img,(120,130,50),(190,200,130))    # On chope le gris  BGR
     yellow = mask_on(img,(130,200,145),(200,255,255))  # On chope le jaune BGR
     """
+    """
     green = mask_on(img,(80,100,20),(220,180,130))     # On chope le vert BGR NUIT
     grey = mask_on(img, (110,70,30),(200,130,160))  # On chope le gris BGR NUIT
-    yellow = mask_on(img,(110,130,140),(220 ,210,240))  # On chope le jaune BGR NUIT 
-    
+    yellow = mask_on(img,(110,130,140),(220 ,210,240))  # On chope le jaune BGR NUIT
     """
-      
+    
+    green_light =  mask_on(img,(80,100  ,50),(165,150,120)) # On chope le vert clair BGR NUIT
+    green_dark = mask_on(img,(90,65,0),(130,100,10)) # On chope le vert foncé  BGR NUIT
+    building = mask_on(img,(140,140,55),(200,170,100)) # On chope les batiments BGR NUIT
+    building_boundaries = mask_on(img,(140,140,100),(180,170,125)) # On chope les batiments BGR NUIT
+    road = mask_on(img,(150,180,110),(160,190,120)) # On chope les routes BGR NUIT
+    road_boundaries = mask_on(img,(110,75,35),(145,95,50)) # On chope les bordures des routes BGR NUIT
+    pokestop_violet = mask_on(img,(216,87,90),(218,89,120)) # On chope les pokestop BGR NUIT
+    pokestop_rose = mask_on(img,(250,170,250),(255,185,255)) # On chope les pokestop BGR NUIT
+
+    
+    
+    """ 
     img = cv.addWeighted(green, 1, grey, 1, 0) # fusion de deux images 
     img = cv.addWeighted(img, 1, yellow, 1, 0) # image avec les filtres 
+    """
+    
+    img = cv.addWeighted(green_light, 1, green_dark, 1, 0) # image avec les filtres 
+    img = cv.addWeighted(img, 1, building, 1, 0) # image avec les filtres
+    img = cv.addWeighted(building_boundaries, 1, img, 1, 0) # image avec les filtres
+    img = cv.addWeighted(road, 1, img, 1, 0) # image avec les filtres
+    img = cv.addWeighted(road_boundaries, 1, img, 1, 0) # image avec les filtres
+    img = cv.addWeighted(pokestop_rose, 1, img, 1, 0) # image avec les filtres
+    img = cv.addWeighted(pokestop_violet, 1, img, 1, 0) # image avec les filtres
+    
+    # on va juste remplacer tous les pixels autour du joueur par des pixels blancs histoire de pas confondre joueur et pkm
+    for i in range(290,410) : 
+        for j in range(500,580) :
+            img[i][j] = [255,255,255]
+
+    
+    cv.imwrite("photo_filtre.png",img)
     return(img)
 
 
@@ -297,6 +329,69 @@ def ecran_jeu(image) : # fonction disant si on est sur l'écran de jeu ou non
                         result = True 
     return(result)
 
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+def on_pkstop(img) : # fonction qui valide si on est sur un pokestop ou non
+    result = False 
+    
+    #print(img[2100][100],img[2100][1000],img[2180][540])
+    # on check trois points qui sont censés etre bleu 
+    if is_approx(img[2100][100], [237, 126, 32],10) and is_approx(img[2100][1000], [237, 126, 32],10) and is_approx(img[2180][540], [237, 126, 32],10) : 
+        result = True
+    elif is_approx(img[2100][100], [217, 88, 106],10) and is_approx(img[2100][1000], [217, 88, 106],10) and is_approx(img[2180][540], [217, 88, 106],10) : 
+        result = True
+
+        
+    return(result)
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+def pokestop(): # fonction qui fait tourner le pokestop 
+    myPhone.Swipe(1000,1150,100,1150,100)
+    time.sleep(0.2)
+    myPhone.Press(540,2060)
+    
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+def level_up(img) : 
+    result = False 
+    
+    if is_approx(img[734][100], [255, 255, 255],10) : # on regarde si un premier pixel est la 
+    # s'il est la, on check tous les autres 
+        if is_approx(img[734][200], [255, 255, 255],10) and is_approx(img[734][300], [255, 255, 255],10) and is_approx(img[734][100], [255, 255, 255],10) and is_approx(img[734][200], [255, 255, 255],10) and     is_approx(img[734][300], [255, 255, 255],10) : 
+            result = True 
+    
+    return(result)
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+def quit_lvl_up(): 
+    myPhone.Press(540,1950)
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+    
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
