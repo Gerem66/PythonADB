@@ -6,13 +6,15 @@ import time
 import cv2
 
 class SmartPhone(object):
-    def __init__(self, ADB_PATH, index = 0):
+    def __init__(self, ADB_PATH = '', index = 0):
         self.PIC_PATH = "/sdcard/screen.jpg"
         self.TMP_IMG = "screen.jpg"
         self.offset_x = 0
         self.offset_y = 0
 
-        self.ADB_PATH = ADB_PATH + ("\\" if ADB_PATH[-1] != "\\" else "")
+        if len(ADB_PATH) > 0 and ADB_PATH[-1] != "\\":
+            ADB_PATH += "\\"
+        self.ADB_PATH = ADB_PATH
         self.DEVICES = []
         self.LoadDevices()
         self.SetDevice(index)
