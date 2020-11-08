@@ -54,12 +54,17 @@ for x in range(len(edged[0])):
             CheckAround(len(shapes), True, x, y)
 
 # Find Pokémons
+
+### Tes 3 valeurs à ajuster si besoin
 square_size = 100
 square_step = 50
-for x in range(len(edged[0]))[10:-10:square_step]:
-    for y in range(len(edged))[10:-10:square_step]:
+tolerence = 10
+###
+
+for x in range(len(edged[0]))[square_step:-square_step:square_step]:
+    for y in range(len(edged))[square_step:-square_step:square_step]:
         nb_shapes = ShapesInSurface(x, y, x + square_size, y + square_size)
-        if nb_shapes > 10:
+        if nb_shapes > tolerence:
             DrawSquare(x, y, x + square_size, y + square_size)
 
 # Result

@@ -15,14 +15,14 @@ myPhone = SP(r"C:\Users\___\platform-tools")
 
 | Function                | Arguments (int)             | Description                                                      |
 |-------------------------|-----------------------------|------------------------------------------------------------------|
-| SmartPhone (class)      | [(str)ADB Path, index = 0]  | Open ADB and select device, default selected device : 0          |
+| SmartPhone (class)      | (str)ADB Path [, index = 0] | Open ADB and select device, default selected device : 0          |
 | GetDevices              | ø                           | Get all devices name                                             |
 | SetDevice               | index                       | Select an other device                                           |
 | SetOffset               | x, x                        | Add offset to calibrate functions                                |
 | Press                   | x, y                        | TouchScreen at x, y position                                     |
 | LongPress               | x, y [, d = 1000]           | Press the screen in (x, y) for d milliseconds                    |
 | Swipe                   | x1, y1, x2, y2 [, d = 1000] | Swipe the screen from (x1, y1) to (x2, y2) during d milliseconds |
-| WriteText               | (str)text                   | Simulation of smatphone keyboard                                 |
+| WriteText               | text                        | Simulation of smatphone keyboard                                 |
 | TakeScreenshot          | ø                           | Take a screenshot and return image as CV2 Image                  |
 | TakeScreenshotWithPress | x, y                        | Touch screen, take a screenshot and return image as CV2 Image    |
 
