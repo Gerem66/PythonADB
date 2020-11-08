@@ -41,6 +41,9 @@ with myPhone.TakeScreenshot() as img:
 ```
 
 ## To Do
+- [ ] swipe en 3 temps 
+- [ ] Revoir méthode pour trouver pokemon pokestop et arène
+- [ ] arène (pokestop)
 - [ ] pokestop
 - [ ] repenser manière capter pokemon OU revoir filtre
 - [ ] enlever le personnage pour pas appuyer dessus
