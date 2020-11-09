@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import time
 import cv2 as cv
 from ADBLib import SmartPhone as SP
 
@@ -42,22 +43,24 @@ def DrawSquare(x1, y1, x2, y2):
                 edged[y][x] = 255
 
 # Main
+t1 = time.time()
 edged = cv.Canny(image, 30, 200)
 around = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]]
 shapes = []
 mt_shp = []
 
 # Get shapes
-for x in range(len(edged[0])):
-    for y in range(len(edged)):
+for x in range(len(edged[0]))[::4]:
+    for y in range(len(edged))[::4]:
         if edged[y][x] == 255:
             CheckAround(len(shapes), True, x, y)
+t2 = time.time()
 
 # Find Pokémons
 
 ### Tes 3 valeurs à ajuster si besoin
 square_size = 100
-square_step = 50
+square_step = 80
 tolerence = 10
 ###
 
@@ -66,6 +69,10 @@ for x in range(len(edged[0]))[square_step:-square_step:square_step]:
         nb_shapes = ShapesInSurface(x, y, x + square_size, y + square_size)
         if nb_shapes > tolerence:
             DrawSquare(x, y, x + square_size, y + square_size)
+t3 = time.time()
+print("Step 1 : " + str(t2 - t1))
+print("Step 2 : " + str(t3 - t2))
+print("Total time : " + str(t3 - t1))
 
 # Result
 cv.imshow('Pokemons', edged)
