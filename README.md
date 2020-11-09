@@ -39,23 +39,6 @@ with myPhone.TakeScreenshot() as img:
     print(img.size)
     ...
 ```
-<<<<<<< HEAD
-## To Do 
-* pokestop
-* repenser manière capter pokemon OU revoir filtre
-* enlever le personnage pour pas appuyer dessus
-* rond blanc capture nuit
-* rajouter un moyen de savoir quand c'est mode nuit
-* filtrer cercle couleur pour déterminer quel ball prendre
-* encens fait beuger les filtres
-* montgolfiere team rocket
-* combat team rocket
-* pokemon pas au centre terrain swipe 3 temps
-* revoir méthode pour rond blanc (gérem a une idée mais il veut pas la dire wesh mdrrr)
-
-
-=======
->>>>>>> 8c10f9001898c936c226b75c359b537df1a48d3a
 
 ## To Do
 - [ ] swipe en 3 temps 
