@@ -3,7 +3,7 @@
 
 import os
 import time
-import cv2
+from cv2 import imread
 
 class SmartPhone(object):
     def __init__(self, ADB_PATH = '', index = 0):
@@ -43,11 +43,12 @@ class SmartPhone(object):
             self.Error("Wrong device index")
         self.CURR_DEV = index
 
-    def ADB(self, arg, sync = True):
+    def ADB(self, arg, sync = True, quiet = False):
+        q = " > "+os.devnull if quiet else ""
         if not sync:
-            os.popen("{}adb -s {} {}".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], arg))
+            os.popen("{}adb -s {} {}{}".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], arg, q))
         else:
-            os.system("{}adb -s {} {}".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], arg))
+            os.system("{}adb -s {} {}{}".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], arg, q))
 
 
 
@@ -67,19 +68,19 @@ class SmartPhone(object):
     def WriteText(self, text):
         self.ADB("shell input text '{}'".format(text))
 
-    def TakeScreenshot(self):
-        self.ADB("shell screencap -p " + self.PIC_PATH)
-        self.ADB("pull {} {}".format(self.PIC_PATH, self.TMP_IMG))
-        self.ADB("shell rm " + self.PIC_PATH)
+    def TakeScreenshot(self, debug = False):
+        self.ADB("shell screencap -p " + self.PIC_PATH, quiet=not debug)
+        self.ADB("pull {} {}".format(self.PIC_PATH, self.TMP_IMG), quiet=not debug)
+        self.ADB("shell rm " + self.PIC_PATH, quiet=not debug)
         time.sleep(0.1)
-        img = cv2.imread(self.TMP_IMG).copy()
+        img = imread(self.TMP_IMG).copy()
         os.remove(self.TMP_IMG)
         return img
     
-    def TakeScreenshotWithPress(self, x, y):
-        self.ADB("shell input touchscreen swipe {} {} {} {} {}".format(x + self.offset_x, y + self.offset_y, x + self.offset_x, y + self.offset_y, 500), False)
+    def TakeScreenshotWithPress(self, x, y, debug = False):
+        self.ADB("shell input touchscreen swipe {} {} {} {} {}".format(x + self.offset_x, y + self.offset_y, x + self.offset_x, y + self.offset_y, 500), False, not debug)
         time.sleep(0.6)
-        return self.TakeScreenshot()
+        return self.TakeScreenshot(debug)
 
 
     # Errors
