@@ -91,4 +91,4 @@ class SmartPhone(object):
             
     def Error(self, text):
         print("[-] " + text)
-        exit(-1)
+        exit(0)
