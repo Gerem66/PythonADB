@@ -25,6 +25,8 @@ myPhone = SP(r"C:\Users\___\platform-tools")
 | WriteText               | text                        | Simulation of smatphone keyboard                                                      |
 | TakeScreenshot          | [debug = False]             | Take a screenshot and return image as CV2 Image (debug mode show details of transfer) |
 | TakeScreenshotWithPress | x, y [, debug = False]      | Touch screen, take a screenshot and return image as CV2 Image                         |
+| SaveMove                | ø                           | Save input screen events                                                              |
+| SendMove                | ø                           | Send input screen events                                                              |
 
 ## Example
 ```Python
