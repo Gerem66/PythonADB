@@ -5,6 +5,11 @@ import os
 import time
 from cv2 import imread
 
+# Save : adb exec-out getevent -t /dev/input/event4 > recorded_touch_events.txt
+# Load : adb push sendevent-arm64 /data/local/tmp/
+#        adb push recorded_touch_events.txt /data/local/tmp/
+#        adb shell /data/local/tmp/sendevent-arm64 /dev/input/event4 /data/local/tmp/recorded_touch_events.txt
+
 class SmartPhone(object):
     def __init__(self, ADB_PATH = '', index = 0):
         self.PIC_PATH = "/sdcard/screen.jpg"
@@ -16,8 +21,10 @@ class SmartPhone(object):
             ADB_PATH += "\\"
         self.ADB_PATH = ADB_PATH
         self.DEVICES = []
+        self.EVENTSCREEN = ""
         self.LoadDevices()
         self.SetDevice(index)
+        self.GetEventScreen()
     
     def SetOffset(self, x, y):
         self.offset_x = x
@@ -42,6 +49,19 @@ class SmartPhone(object):
         if index < 0 or index >= len(self.DEVICES):
             self.Error("Wrong device index")
         self.CURR_DEV = index
+    
+    def GetEventScreen(self):
+        found = False
+        events = os.popen("{}adb -s {} shell getevent -lp 2>/dev/null | egrep -o \"(/dev/input/event\S+)\"".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV]))
+        for event in events:
+            info = os.popen("{}adb -s {} shell getevent -lp {}".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], event[:-1]))
+            for i in info:
+                if "ABS_MT" in i:
+                    self.EVENTSCREEN = event[:-1]
+                    found = True
+                    break
+            if found:
+                break
 
     def ADB(self, arg, sync = True, quiet = False):
         q = " > "+os.devnull if quiet else ""
@@ -81,6 +101,16 @@ class SmartPhone(object):
         self.ADB("shell input touchscreen swipe {} {} {} {} {}".format(x + self.offset_x, y + self.offset_y, x + self.offset_x, y + self.offset_y, 500), False, not debug)
         time.sleep(0.6)
         return self.TakeScreenshot(debug)
+
+    def SaveMove(self):
+        print("[!] Ctrl-C to end recording")
+        os.system("{}adb -s {} exec-out getevent -t {} > recorded_touch_events.txt".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], self.EVENTSCREEN))
+        exit(0)
+    
+    def SendMove(self):
+        self.ADB("push sendevent-arm64 /data/local/tmp/")
+        self.ADB("push recorded_touch_events.txt /data/local/tmp/")
+        self.ADB("shell /data/local/tmp/sendevent-arm64 {} /data/local/tmp/recorded_touch_events.txt".format(self.EVENTSCREEN))
 
 
     # Errors
