@@ -66,3 +66,4 @@ pip3 install Pillow
 * [ADB Commands Source 1 (medium.com)](https://medium.com/@minamimunakata/how-to-take-a-screenshot-on-android-with-adb-on-windows-pc-d52f7603b1d2)
 * [ADB Commands Source 2 (stackoverflow)](https://stackoverflow.com/questions/11142843/how-can-i-use-adb-to-send-a-longpress-key-event)
 * [ADB Commands Source 3 (althority.com)](http://www.althority.com/adb_shell_input/)
+* [ADB Record / Replay events](https://github.com/Cartucho/android-touch-record-replay)
