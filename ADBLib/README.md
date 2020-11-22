@@ -45,7 +45,7 @@ myPhone = SP()
 | x         | Int                        |
 | y         | Int                        |
 | d         | Float                      |
-|===========|============================|
+|################# Test #################|
 | coords    | list of elements*          |
 | element*  | list of 3 vars : [x, y, d] |
 | text      | String                     |
