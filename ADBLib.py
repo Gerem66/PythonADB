@@ -17,6 +17,7 @@ class SmartPhone(object):
         self.TMP_IMG = "screen.jpg"
         self.offset_x = 0
         self.offset_y = 0
+        self.eventuploaded = False
 
         if len(ADB_PATH) > 0 and ADB_PATH[-1] != "\\":
             ADB_PATH += "\\"
@@ -26,6 +27,9 @@ class SmartPhone(object):
         self.LoadDevices()
         self.SetDevice(index)
         self.GetEventScreen()
+    
+    def Destroy(self):
+        self.RemoveSendEvent()
     
     def SetOffset(self, x, y):
         self.offset_x = x
@@ -50,6 +54,7 @@ class SmartPhone(object):
         if index < 0 or index >= len(self.DEVICES):
             self.Error("Wrong device index")
         self.CURR_DEV = index
+        self.UploadSendEvent()
     
     def GetEventScreen(self):
         found = False
@@ -63,6 +68,15 @@ class SmartPhone(object):
                     break
             if found:
                 break
+    
+    def UploadSendEvent(self):
+        self.ADB("push sendevent-arm64 /data/local/tmp/", quiet=True)
+    
+    def RemoveSendEvent(self):
+        self.ADB("shell rm /data/local/tmp/sendevent-arm64", quiet=True)
+        if self.eventuploaded:
+            self.ADB("shell rm /data/local/tmp/events", quiet=True)
+        #self.ADB("shell rm /data/local/tmp/recorded_touch_events.txt", quiet=True)
 
     def ADB(self, arg, sync = True, quiet = False):
         q = " > "+os.devnull if quiet else ""
@@ -70,6 +84,9 @@ class SmartPhone(object):
             os.popen("{}adb -s {} {}{}".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], arg, q))
         else:
             os.system("{}adb -s {} {}{}".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], arg, q))
+    
+    def IntToHex(self, val):
+        return hex(val)[2:].zfill(8)
 
 
 
@@ -103,21 +120,72 @@ class SmartPhone(object):
         time.sleep(0.6)
         return self.TakeScreenshot(debug)
 
-    def SaveMove(self):
-        print("[!] Ctrl-C to end recording")
-        os.system("{}adb -s {} exec-out getevent -t {} > recorded_touch_events.txt".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], self.EVENTSCREEN))
-        exit(0)
+    #def SaveMove(self):
+    #    print("[!] Ctrl-C to end recording")
+    #    #os.system("{}adb -s {} exec-out getevent -t {} > recorded_touch_events.txt".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], self.EVENTSCREEN))
+    #    os.system("{}adb -s {} exec-out getevent -t {} > recorded_touch_events.txt".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], self.EVENTSCREEN))
+    #    exit(0)
+    #
+    #def SendMove(self):
+    #    if not isfile("recorded_touch_events.txt"):
+    #        print("You must record events before send it.")
+    #        exit(0)
+    #    self.ADB("push recorded_touch_events.txt /data/local/tmp/", quiet=True)
+    #    self.ADB("shell /data/local/tmp/sendevent-arm64 {} /data/local/tmp/recorded_touch_events.txt".format(self.EVENTSCREEN), quiet=True)
     
-    def SendMove(self):
-        if not isfile("recorded_touch_events.txt"):
-            print("You must record events before send it.")
-            exit(0)
-        self.ADB("push sendevent-arm64 /data/local/tmp/", quiet=True)
-        self.ADB("push recorded_touch_events.txt /data/local/tmp/", quiet=True)
-        self.ADB("shell /data/local/tmp/sendevent-arm64 {} /data/local/tmp/recorded_touch_events.txt".format(self.EVENTSCREEN), quiet=True)
-        self.ADB("shell rm /data/local/tmp/recorded_touch_events.txt", quiet=True)
-        self.ADB("shell rm /data/local/tmp/sendevent-arm64", quiet=True)
+    def SendMove(self, ADBcommands):
+        with open("events", "a") as f:
+            f.write(ADBcommands)
+        self.ADB("push events /data/local/tmp/", quiet=True)
+        self.ADB("shell /data/local/tmp/sendevent-arm64 {} /data/local/tmp/events".format(self.EVENTSCREEN), quiet=True)
+        os.remove("events")
+        self.eventuploaded = True
+    
+    def PressManual(self, x, y, duration = .1):
+        s = self.ADBPress(x, y)
+        s += self.ADBTimer(duration)
+        s += self.ADBRelease()
+        self.SendMove(s)
 
+    def ADBSwipe(self, x1, y1, x2, y2, duration = .1):
+        s = self.ADBPress(x1, y1)
+        step = max(abs(x2 - x1), abs(y2 - y1))
+        dx = (x2 - x1) / step
+        dy = (y2 - y1) / step
+        dt = float(duration) / float(step)
+        for i in range(step):
+            nx = int(x1 + (dx * i))
+            ny = int(y1 + (dy * i))
+            s += self.ADBSet(nx, ny)
+            s += self.ADBTimer(dt)
+        s += self.ADBRelease()
+        self.SendMove(s)
+    
+    # ADB Commands
+    def ADBPress(self, x, y, duration = 0.1):
+        s = "0003 003a 00000001\n"
+        s += "0003 0035 {}\n".format(self.IntToHex(x))
+        s += "0003 0036 {}\n".format(self.IntToHex(y))
+        s += "0003 0039 00000000\n"
+        s += "0000 0002 00000000\n"
+        s += "0001 014a 00000001\n"
+        s += "0000 0000 00000000\n"
+        return s
+    def ADBRelease(self):
+        s = "0000 0002 00000000\n"
+        s += "0001 014a 00000000\n"
+        s += "0000 0000 00000000\n"
+        return s
+    def ADBSet(self, x, y):
+        s = "0003 003a 00000001\n"
+        s += "0003 0035 {}\n".format(self.IntToHex(x))
+        s += "0003 0036 {}\n".format(self.IntToHex(y))
+        s += "0003 0039 00000000\n"
+        s += "0000 0002 00000000\n"
+        s += "0000 0000 00000000\n"
+        return s
+    def ADBTimer(self, d):
+        return str(d) + "\n"
 
     # Errors
 
