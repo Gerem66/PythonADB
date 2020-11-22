@@ -87,7 +87,7 @@ class SmartPhone(object):
     # Private ADB functions #
     #########################
 
-    def ADBPress(self, x, y, duration = 0.1):
+    def ADBPress(self, x, y):
         s = "0003 003a 00000001\n"
         s += "0003 0035 {}\n".format(self.IntToHex(x))
         s += "0003 0036 {}\n".format(self.IntToHex(y))
@@ -136,9 +136,10 @@ class SmartPhone(object):
         return img
     
     def TakeScreenshotWithPress(self, x, y, debug = False):
-        self.ADB("shell input touchscreen swipe {} {} {} {} {}".format(x + self.offset_x, y + self.offset_y, x + self.offset_x, y + self.offset_y, 500), False, not debug)
-        time.sleep(0.6)
-        return self.TakeScreenshot(debug)
+        self.SendMove(self.ADBPress(x, y))
+        img = self.TakeScreenshot(debug)
+        self.SendMove(self.ADBRelease())
+        return img
     
     # TouchScreen functions
     
@@ -174,15 +175,6 @@ class SmartPhone(object):
                 for v in Var:
                     self.CheckType(v, Type)
             else:
-                self.Error("Argument type error !")
-
-    def CheckType2(self, vars, typ, inList = True):
-        if inList:
-            for var in vars:
-                if type(var) != typ:
-                    self.Error("Argument type error !")
-        else:
-            if type(vars) != typ:
                 self.Error("Argument type error !")
             
     def Error(self, text):
