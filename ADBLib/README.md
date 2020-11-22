@@ -1,7 +1,7 @@
 # PythonADB
 
 ## Use
-1. You must have this git project, Python, ADB and OpenCV2 (download links in sources)
+1. You must have this git project, **Python**, **ADB** and **OpenCV2** (download links in sources)
 > Tested on Python 3.8, ADB 8.1.0, OpenCV 4.2.0
 2. Include in project
 ```Python
