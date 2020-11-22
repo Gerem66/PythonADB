@@ -3,16 +3,11 @@
 
 import cv2
 from ADBLib import SmartPhone as SP
-from time import time
+
 myPhone = SP()
-#myPhone.SaveMove()
-#myPhone.SendMove()
-input(">> ")
-t1 = time()
-myPhone.ADBSwipe(600, 822, 311, 922, 0.5)
-print(time() - t1)
+
 #myPhone.Press(100, 800)
-#myPhone.Swipe(50, 1500, 500, 1500) # Default duration : 1000ms
+#myPhone.Swipe([[ 600, 822, 0 ], [ 311, 922, 0.5 ], [ 500, 500, 1 ], [ 1000, 1000, 0.1 ]])
 #myPhone.WriteText("heyyy !")
 #cv2.imwrite("test.jpg", myPhone.TakeScreenshot())
 
