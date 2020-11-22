@@ -27,7 +27,7 @@ myPhone = SP()
 | SetDevice               | index                       | Select an other device                                                                |
 | SetOffset               | x, x                        | Add offset to calibrate functions                                                     |
 | GetEventScreen          | ø                           | Get name of the screen                                                                |
-| **Class Functions**                                                                                                                           |
+| **Class Functions**     |
 | Press                   | x, y [, d = 1]              | Press the screen in (x, y) for d seconds (use Swipe with 1 point : Swipe([[x, y, d]]) |
 | Swipe                   | coords                      | Navigates the screen from point to point                                              |
 | WriteText               | text                        | Simulation of smatphone keyboard                                                      |
