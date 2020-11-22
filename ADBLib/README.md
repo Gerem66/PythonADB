@@ -38,6 +38,7 @@ myPhone = SP()
 | TakeScreenshot          | [debug = False]             | Take a screenshot and return image as CV2 Image (debug mode show details of transfer) |
 | TakeScreenshotWithPress | x, y [, debug = False]      | Touch screen, take a screenshot and return image as CV2 Image                         |
 
+|################# Test #################|
 | Arguments | Type                       |
 |-----------|----------------------------|
 | ADB_Path  | String                     |
@@ -45,7 +46,6 @@ myPhone = SP()
 | x         | Int                        |
 | y         | Int                        |
 | d         | Float                      |
-|################# Test #################|
 | coords    | list of elements*          |
 | element*  | list of 3 vars : [x, y, d] |
 | text      | String                     |
