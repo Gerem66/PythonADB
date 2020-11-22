@@ -143,10 +143,7 @@ class SmartPhone(object):
     # TouchScreen functions
     
     def Press(self, x, y, duration = 1):
-        s = self.ADBPress(x, y)
-        s += self.ADBTimer(duration)
-        s += self.ADBRelease()
-        self.SendMove(s)
+        self.Swipe([[x, y, duration]])
 
     def Swipe(self, coords):
         self.CheckType(coords, [int, float])

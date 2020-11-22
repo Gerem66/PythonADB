@@ -30,9 +30,9 @@ myPhone = SP()
 | SetOffset      | x, x      | Add offset to calibrate functions |
 | GetEventScreen | ø         | Get name of the screen            |
 
-| Functions               | Arguments                   | Description                                                                           |
+| Class Functions         | Arguments                   | Description                                                                           |
 |-------------------------|-----------------------------|---------------------------------------------------------------------------------------|
-| Press                   | x, y [, d = 1]              | Press the screen in (x, y) for d seconds                                              |
+| Press                   | x, y [, d = 1]              | Press the screen in (x, y) for d seconds (use Swipe with 1 point : Swipe([[x, y, d]]) |
 | Swipe                   | coords                      | Navigates the screen from point to point                                              |
 | WriteText               | text                        | Simulation of smatphone keyboard                                                      |
 | TakeScreenshot          | [debug = False]             | Take a screenshot and return image as CV2 Image (debug mode show details of transfer) |
@@ -45,6 +45,7 @@ myPhone = SP()
 | x         | Int                        |
 | y         | Int                        |
 | d         | Float                      |
+|-----------|----------------------------|
 | coords    | list of elements*          |
 | element*  | list of 3 vars : [x, y, d] |
 | text      | String                     |
