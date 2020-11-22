@@ -1,8 +1,8 @@
 # PythonADB
 
 ## Use
-1. You must have this git project, Python, ADB and PIL (download links in sources)
-> Tested on Python 3.8, Pillow 8.0.1, numpy 1.19.4
+1. You must have this git project, Python, ADB and OpenCV2 (download links in sources)
+> Tested on Python 3.8, ADB 8.1.0, OpenCV 4.2.0
 2. Include in project
 ```Python
 from ADBLib import SmartPhone as SP
@@ -58,7 +58,8 @@ myPhone = SP()
 
 myPhone.Press(500, 800) # Press screen in (500, 800)
 
-# Starts and waits at the point (600, 822) for 0 seconds, then takes 0.5 seconds to go to the point (311, 922) and so on...
+# Starts and waits at the point (600, 822) for 0 seconds,
+# then takes 0.5 seconds to go to the point (311, 922) and so on...
 myPhone.Swipe([[ 600, 822, 0 ], [ 311, 922, 0.5 ], [ 500, 500, 1 ], [ 1000, 1000, 0.1 ]])
 
 myPhone.TakeScreenshot().show() # Take Screenshot and show it
@@ -70,11 +71,14 @@ with myPhone.TakeScreenshot() as img:
 myPhone.Destroy()
 ```
 
-## Sources
+## Download
+* [Download Python](https://www.python.org/)
 * [Download ADB](https://www.frandroid.com/android/rom-custom-2/403222_comment-telecharger-les-outils-adb-et-fastboot-sur-windows-macos-et-linux)
 * Download PIL
 ```
 pip3 install Pillow
 ```
+
+## Sources
 * [ADB Commands Source 1 (medium.com)](https://medium.com/@minamimunakata/how-to-take-a-screenshot-on-android-with-adb-on-windows-pc-d52f7603b1d2)
 * [ADB Record / Replay events (github : Cartucho)](https://github.com/Cartucho/android-touch-record-replay)
