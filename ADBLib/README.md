@@ -22,14 +22,12 @@ myPhone = SP()
 |-------------------------|-----------------------------|---------------------------------------------------------------------------------------|
 | SmartPhone              | ADB_Path [, index = 0]      | Open ADB and select device, default selected device : 0                               |
 | Destroy                 | ø                           | Destroy class, and remove remote files on android                                     |
-| **Class Settings**                                                                                                                            |
+|      **Class Settings** |                             |                                                                                       |
 | GetDevices              | ø                           | Get all devices name                                                                  |
 | SetDevice               | index                       | Select an other device                                                                |
 | SetOffset               | x, x                        | Add offset to calibrate functions                                                     |
 | GetEventScreen          | ø                           | Get name of the screen                                                                |
-
-| Class Functions         | Arguments                   | Description                                                                           |
-|-------------------------|-----------------------------|---------------------------------------------------------------------------------------|
+| **Class Functions**                                                                                                                           |
 | Press                   | x, y [, d = 1]              | Press the screen in (x, y) for d seconds (use Swipe with 1 point : Swipe([[x, y, d]]) |
 | Swipe                   | coords                      | Navigates the screen from point to point                                              |
 | WriteText               | text                        | Simulation of smatphone keyboard                                                      |
@@ -43,7 +41,6 @@ myPhone = SP()
 | x         | Int                        |
 | y         | Int                        |
 | d         | Float                      |
-|:              **Test**               :||
 | coords    | list of elements*          |
 | element*  | list of 3 vars : [x, y, d] |
 | text      | String                     |
