@@ -6,7 +6,7 @@ from ADBLib import SmartPhone as SP
 
 myPhone = SP()
 #myPhone.SaveMove()
-myPhone.SendMove()
+#myPhone.SendMove()
 
 #myPhone.Press(100, 800)
 #myPhone.Swipe(50, 1500, 500, 1500) # Default duration : 1000ms

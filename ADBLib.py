@@ -4,6 +4,7 @@
 import os
 import time
 from cv2 import imread
+from os.path import isfile
 
 # Save : adb exec-out getevent -t /dev/input/event4 > recorded_touch_events.txt
 # Load : adb push sendevent-arm64 /data/local/tmp/
@@ -108,9 +109,14 @@ class SmartPhone(object):
         exit(0)
     
     def SendMove(self):
-        self.ADB("push sendevent-arm64 /data/local/tmp/")
-        self.ADB("push recorded_touch_events.txt /data/local/tmp/")
-        self.ADB("shell /data/local/tmp/sendevent-arm64 {} /data/local/tmp/recorded_touch_events.txt".format(self.EVENTSCREEN))
+        if not isfile("recorded_touch_events.txt"):
+            print("You must record events before send it.")
+            exit(0)
+        self.ADB("push sendevent-arm64 /data/local/tmp/", quiet=True)
+        self.ADB("push recorded_touch_events.txt /data/local/tmp/", quiet=True)
+        self.ADB("shell /data/local/tmp/sendevent-arm64 {} /data/local/tmp/recorded_touch_events.txt".format(self.EVENTSCREEN), quiet=True)
+        self.ADB("shell rm /data/local/tmp/recorded_touch_events.txt", quiet=True)
+        self.ADB("shell rm /data/local/tmp/sendevent-arm64", quiet=True)
 
 
     # Errors
