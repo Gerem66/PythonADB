@@ -22,7 +22,7 @@ myPhone = SP()
 |-------------------------|-----------------------------|---------------------------------------------------------------------------------------|
 | SmartPhone              | ADB_Path [, index = 0]      | Open ADB and select device, default selected device : 0                               |
 | Destroy                 | ø                           | Destroy class, and remove remote files on android                                     |
-|     **Class Settings** :|                             |                                                                                       |
+| **Class Settings**      |
 | GetDevices              | ø                           | Get all devices name                                                                  |
 | SetDevice               | index                       | Select an other device                                                                |
 | SetOffset               | x, x                        | Add offset to calibrate functions                                                     |
