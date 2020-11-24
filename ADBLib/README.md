@@ -22,12 +22,12 @@ myPhone = SP()
 |-------------------------|------------------------|-------------------|----------------|---------------------------------------------------------------|
 | **Class**               |                        |                   |                |                                                               |
 | SmartPhone              | ADB_Path [, index = 0] | Str, Int          | ø              | Open ADB and select device, default selected device : 0       |
-| Destroy                 | ø                      |                   | ø              | Destroy class, and remove remote files on android             |
+| Destroy                 | ø                      | ø                 | ø              | Destroy class, and remove remote files on android             |
 | **Class Settings**      |                        |                   |                |                                                               |
-| GetDevices              | ø                      |                   | List of String | Get all devices name                                          |
+| GetDevices              | ø                      | ø                 | List of String | Get all devices name                                          |
 | SetDevice               | index                  | Int               | ø              | Select an other device                                        |
 | SetOffset               | x, x                   | Int, Int          | ø              | Add offset to calibrate functions                             |
-| GetEventScreen          | ø                      |                   | String         | Get name of the screen                                        |
+| GetEventScreen          | ø                      | ø                 | String         | Get name of the screen                                        |
 | **Class Functions**     |                        |                   |                |                                                               |
 | Press                   | x, y [, d = 1]         | Int, Int[, Float] | ø              | Press the screen in (x, y) for d seconds                      |
 | Swipe                   | coords                 | List of Elements* | ø              | Navigates the screen from point to point                      |
