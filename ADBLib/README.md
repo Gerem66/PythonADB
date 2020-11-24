@@ -73,16 +73,12 @@ myPhone.Destroy()
 - [ ] 
 
 ## Download
-* [Download ADB](https://www.frandroid.com/android/rom-custom-2/403222_comment-telecharger-les-outils-adb-et-fastboot-sur-windows-macos-et-linux)
-* Download PIL
-```
-pip3 install Pillow
-```
+
 | Package | Windows | Linux (Debian) | Linux (Arch) | Other |
 |---|---|---|---|---|
 | Python | [Python](https://www.python.org/) | ``` sudo apt install python3 ``` | ``` sudo pacman -S python3 ``` |
 | ADB | [ADB](https://www.frandroid.com/android/rom-custom-2/403222_comment-telecharger-les-outils-adb-et-fastboot-sur-windows-macos-et-linux) | ``` sudo apt install adb ``` | ``` sudo pacman -S adb ``` |
-| OpenCV2 | [OpenCV2]() | ``` sudo apt install python3-opencv ``` | Install package from this [git](https://aur.archlinux.org/opencv2.git) | ``` pip3 install opencv-python3 ``` |
+| OpenCV2 | [OpenCV2](https://opencv.org/) | ``` sudo apt install python3-opencv ``` | Install package from this [git](https://aur.archlinux.org/opencv2.git) | ``` pip3 install opencv-python3 ``` |
 
 ## Sources
 * [ADB Commands Source 1 (medium.com)](https://medium.com/@minamimunakata/how-to-take-a-screenshot-on-android-with-adb-on-windows-pc-d52f7603b1d2)
