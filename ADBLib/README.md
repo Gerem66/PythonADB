@@ -69,13 +69,19 @@ cv2.destroyAllWindows()                                          # Destroy windo
 myPhone.Destroy()
 ```
 
+## Todo
+- [ ] 
+
 ## Download
 * [Download Python](https://www.python.org/)
 * [Download ADB](https://www.frandroid.com/android/rom-custom-2/403222_comment-telecharger-les-outils-adb-et-fastboot-sur-windows-macos-et-linux)
 * Download PIL
-```sh
+```
 pip3 install Pillow
 ```
+| Package | Windows | Linux (Debian) | Linux (Arch) |
+|---|---|---|---|
+| Download Python | [Python](https://www.python.org/) | ``` sudo apt install python3 ``` | ``` sudo pacman -S python3 ``` |
 
 ## Sources
 * [ADB Commands Source 1 (medium.com)](https://medium.com/@minamimunakata/how-to-take-a-screenshot-on-android-with-adb-on-windows-pc-d52f7603b1d2)
