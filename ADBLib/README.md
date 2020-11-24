@@ -73,9 +73,7 @@ myPhone.Destroy()
 * [Download Python](https://www.python.org/)
 * [Download ADB](https://www.frandroid.com/android/rom-custom-2/403222_comment-telecharger-les-outils-adb-et-fastboot-sur-windows-macos-et-linux)
 * Download PIL
-```
-pip3 install Pillow
-```
+``` pip3 install Pillow ```
 
 ## Sources
 * [ADB Commands Source 1 (medium.com)](https://medium.com/@minamimunakata/how-to-take-a-screenshot-on-android-with-adb-on-windows-pc-d52f7603b1d2)
