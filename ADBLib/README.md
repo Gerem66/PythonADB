@@ -69,9 +69,6 @@ cv2.destroyAllWindows()                                          # Destroy windo
 myPhone.Destroy()
 ```
 
-## Todo
-- [ ] Tests
-
 ## Download
 
 | Package | Windows | Linux (Debian) | Linux (Arch) | Other |
