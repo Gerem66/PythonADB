@@ -29,9 +29,9 @@ class SmartPhone(object):
         self.GetEventScreen()
     
     def Destroy(self):
-        self.ADB("shell rm /data/local/tmp/sendevent-arm64", quiet=True)
+        self.ADB("shell rm /data/local/tmp/sendevent-arm64", True)
         if self.eventuploaded:
-            self.ADB("shell rm /data/local/tmp/events", quiet=True)
+            self.ADB("shell rm /data/local/tmp/events", True)
     
     def LoadDevices(self):
         devices = os.popen(self.ADB_PATH + "adb devices").read().split("\n")
@@ -54,7 +54,7 @@ class SmartPhone(object):
         self.CURR_DEV = index
 
         # Upload : "sendevent-arm64"
-        self.ADB("push {}/sendevent-arm64 /data/local/tmp/".format(self.PATH), quiet=True)
+        self.ADB("push {}/sendevent-arm64 /data/local/tmp/".format(self.PATH), True)
     
     def SetOffset(self, x, y):
         self.offset_x = x
@@ -73,19 +73,13 @@ class SmartPhone(object):
             if found:
                 break
 
-    def ADB(self, arg, sync = True, quiet = False):
-        q = " > "+os.devnull if quiet else ""
-        if not sync:
-            os.popen("{}adb -s {} {}{}".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], arg, q))
-        else:
-            os.system("{}adb -s {} {}{}".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], arg, q))
-    
-    def IntToHex(self, val):
-        return hex(val)[2:].zfill(8)
-
     #########################
     # Private ADB functions #
     #########################
+
+    def ADB(self, arg, quiet = False):
+        q = " > "+os.devnull if quiet else ""
+        os.system("{}adb -s {} {}{}".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], arg, q))
 
     def ADBPress(self, x, y):
         s = "0003 003a 00000001\n"
@@ -114,8 +108,8 @@ class SmartPhone(object):
     def SendMove(self, ADBcommands):
         with open("{}/events".format(self.PATH), "a") as f:
             f.write(ADBcommands)
-        self.ADB("push {}/events /data/local/tmp/".format(self.PATH), quiet=True)
-        self.ADB("shell /data/local/tmp/sendevent-arm64 {} /data/local/tmp/events".format(self.EVENTSCREEN), quiet=True)
+        self.ADB("push {}/events /data/local/tmp/".format(self.PATH), True)
+        self.ADB("shell /data/local/tmp/sendevent-arm64 {} /data/local/tmp/events".format(self.EVENTSCREEN), True)
         os.remove("{}/events".format(self.PATH))
         self.eventuploaded = True
 
@@ -127,9 +121,9 @@ class SmartPhone(object):
         self.ADB("shell input text '{}'".format(text))
 
     def TakeScreenshot(self, debug = False):
-        self.ADB("shell screencap -p " + self.PIC_PATH, quiet=not debug)
-        self.ADB("pull {} {}".format(self.PIC_PATH, self.TMP_IMG), quiet=not debug)
-        self.ADB("shell rm " + self.PIC_PATH, quiet=not debug)
+        self.ADB("shell screencap -p " + self.PIC_PATH, not debug)
+        self.ADB("pull {} {}".format(self.PIC_PATH, self.TMP_IMG), not debug)
+        self.ADB("shell rm " + self.PIC_PATH, not debug)
         time.sleep(0.1)
         img = imread(self.TMP_IMG).copy()
         os.remove(self.TMP_IMG)
@@ -164,6 +158,13 @@ class SmartPhone(object):
 
         s += self.ADBRelease()
         self.SendMove(s)
+
+    #########    
+    # Other #
+    #########
+
+    def IntToHex(self, val):
+        return hex(val)[2:].zfill(8)
 
     ##########
     # Errors #
