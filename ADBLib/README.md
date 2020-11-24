@@ -27,6 +27,7 @@ myPhone = SP()
 | GetDevices              | ø                      |                   | List of String | Get all devices name                                          |
 | SetDevice               | index                  | Int               | ø              | Select an other device                                        |
 | SetOffset               | x, x                   | Int, Int          | ø              | Add offset to calibrate functions                             |
+Test
 | GetEventScreen          | ø                      |                   | String         | Get name of the screen                                        |
 | **Class Functions**     |                        |                   |                |                                                               |
 | Press                   | x, y [, d = 1]         | Int, Int[, Float] | ø              | Press the screen in (x, y) for d seconds                      |
@@ -70,5 +71,6 @@ myPhone.Destroy()
 ## Sources
 * [ADB Commands Source 1 (medium.com)](https://medium.com/@minamimunakata/how-to-take-a-screenshot-on-android-with-adb-on-windows-pc-d52f7603b1d2)
 * [ADB Record / Replay events (github : Cartucho)](https://github.com/Cartucho/android-touch-record-replay)
-* [MarkDown syntaxe (gitlab.com)](https://docs.gitlab.com/ee/user/markdown.html)
+* [MarkDown syntax (gitlab.com)](https://docs.gitlab.com/ee/user/markdown.html)
+* [MarkDown Syntax (gihhub.com)](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 * [cv2 in VSCode error (github.com)](https://github.com/PyCQA/pylint/issues/2426)
