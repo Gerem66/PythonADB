@@ -18,8 +18,9 @@ myPhone = SP()
 ```
 4. Use all fonctions !!!
 
-| Class                   | Arguments                   | Description                                                                           |
+|                         | Arguments                   | Description                                                                           |
 |-------------------------|-----------------------------|---------------------------------------------------------------------------------------|
+| **Class**               |
 | SmartPhone              | ADB_Path [, index = 0]      | Open ADB and select device, default selected device : 0                               |
 | Destroy                 | ø                           | Destroy class, and remove remote files on android                                     |
 | **Class Settings**      |
