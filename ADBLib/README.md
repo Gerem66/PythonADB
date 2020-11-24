@@ -27,7 +27,6 @@ myPhone = SP()
 | GetDevices              | ø                      |                   | List of String | Get all devices name                                          |
 | SetDevice               | index                  | Int               | ø              | Select an other device                                        |
 | SetOffset               | x, x                   | Int, Int          | ø              | Add offset to calibrate functions                             |
-Test
 | GetEventScreen          | ø                      |                   | String         | Get name of the screen                                        |
 | **Class Functions**     |                        |                   |                |                                                               |
 | Press                   | x, y [, d = 1]         | Int, Int[, Float] | ø              | Press the screen in (x, y) for d seconds                      |
