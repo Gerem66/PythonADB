@@ -17,7 +17,7 @@ myPhone = SP()
 # Pokéball roll
 cercle = [ 500, 1500, 250, 0.01 ] # (500, 500) Point du centre du cercle, 50 : diamètre du cercle, 0.1 : vitesse entre chaque point
 points = []
-for _ in range(10): # On fait 10 tours
+for _ in range(3): # On fait 3 tours
     for a in range(360)[::10]: # On prend 36 points sur un cercle trigo (0°, 10°, 20°, ..., 350°)
         rad = a * math.pi / 180
         p = [ 0, 0, 0 ] # Nouveau point
