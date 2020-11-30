@@ -5,11 +5,6 @@ import os
 import time
 from cv2 import imread
 
-# Save : adb exec-out getevent -t /dev/input/event4 > recorded_touch_events.txt
-# Load : adb push sendevent-arm64 /data/local/tmp/
-#        adb push recorded_touch_events.txt /data/local/tmp/
-#        adb shell /data/local/tmp/sendevent-arm64 /dev/input/event4 /data/local/tmp/recorded_touch_events.txt
-
 class SmartPhone(object):
     def __init__(self, ADB_PATH = '', index = 0):
         self.PATH = os.path.dirname(__file__)
