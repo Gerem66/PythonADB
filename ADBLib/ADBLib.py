@@ -120,19 +120,23 @@ class SmartPhone(object):
     def WriteText(self, text):
         self.ADB("shell input text '{}'".format(text))
 
-    def TakeScreenshot(self, debug = False):
+    def TakeScreenshot(self, point = None, debug = False):
+        press = False
+        if point != None:
+            self.CheckType(point, [int])
+            press = True
+            x, y = point
+            self.SendMove(self.ADBPress(x, y))
+        
         self.ADB("shell screencap -p " + self.PIC_PATH, not debug)
         self.ADB("pull {} {}".format(self.PIC_PATH, self.TMP_IMG), not debug)
+        
+        if point != press:
+            self.SendMove(self.ADBRelease())
+        
         self.ADB("shell rm " + self.PIC_PATH, not debug)
-        time.sleep(0.1)
         img = imread(self.TMP_IMG).copy()
         os.remove(self.TMP_IMG)
-        return img
-    
-    def TakeScreenshotWithPress(self, x, y, debug = False):
-        self.SendMove(self.ADBPress(x, y))
-        img = self.TakeScreenshot(debug)
-        self.SendMove(self.ADBRelease())
         return img
     
     # TouchScreen functions

@@ -18,24 +18,24 @@ myPhone = SP()
 ```
 4. Use all fonctions !!!
 
-|                         | Arguments              | Args Type         | Returned Type  | Description                                                   |
-|-------------------------|------------------------|-------------------|----------------|---------------------------------------------------------------|
-| **Class**               |                        |                   |                |                                                               |
-| SmartPhone              | ADB_Path [, index = 0] | Str, Int          | ø              | Open ADB and select device, default selected device : 0       |
-| Destroy                 | ø                      | ø                 | ø              | Destroy class, and remove remote files on android             |
-| **Class Settings**      |                        |                   |                |                                                               |
-| GetDevices              | ø                      | ø                 | List of String | Get all devices name                                          |
-| SetDevice               | index                  | Int               | ø              | Select an other device                                        |
-| SetOffset               | x, x                   | Int, Int          | ø              | Add offset to calibrate functions                             |
-| GetEventScreen          | ø                      | ø                 | String         | Get name of the screen                                        |
-| **Class Functions**     |                        |                   |                |                                                               |
-| Press                   | x, y [, d = 1]         | Int, Int[, Float] | ø              | Press the screen in (x, y) for d seconds                      |
-| Swipe                   | coords                 | List of Elements* | ø              | Navigates the screen from point to point                      |
-| WriteText               | text                   | String            | ø              | Simulation of smatphone keyboard                              |
-| TakeScreenshot          | [debug = False]        | Bool              | CV2 Image      | Take a screenshot (debug mode show details of transfer)       |
-| TakeScreenshotWithPress | x, y [, debug = False] | Int, Int[, Bool]  | CV2 Image      | Touch screen, take a screenshot and return image as CV2 Image |
-| **Variables**           |                        |                   |                |                                                               |
-| Elements*               |                        |                   |                | Format [ Int, Int, Float] : x, y, time in seconds             |
+|                     | Arguments                  | Args Type         | Returned Type  | Description                                                 |
+|-------------------- |----------------------------|-------------------|----------------|-------------------------------------------------------------|
+| **Variables type**  |                            |                   |                |                                                             |
+| Point               | x, y                       | Int, Int          | List           | E.g. : [250, 300]                                           |
+| TPoint              | x, y, duration             | Int, Int, Float   | List           | E.g. : [250, 300, 0.1]                                      |
+| **Class**           |                            |                   |                |                                                             |
+| SmartPhone          | ADB_Path [, index = 0]     | Str, Int          | ø              | Open ADB and select device, default selected device : 0     |
+| Destroy             | ø                          | ø                 | ø              | Destroy class, and remove remote files on android           |
+| **Class Settings**  |                            |                   |                |                                                             |
+| GetDevices          | ø                          | ø                 | List of String | Get all devices name                                        |
+| SetDevice           | index                      | Int               | ø              | Select an other device                                      |
+| SetOffset           | x, x                       | Int, Int          | ø              | Add offset to calibrate functions                           |
+| GetEventScreen      | ø                          | ø                 | String         | Get name of the screen                                      |
+| **Class Functions** |                            |                   |                |                                                             |
+| Press               | x, y [, d = 1]             | Int, Int[, Float] | ø              | Press the screen in (x, y) for d seconds                    |
+| Swipe               | coords                     | List of TPoint    | ø              | Navigates the screen from point to point                    |
+| WriteText           | text                       | String            | ø              | Simulation of smatphone keyboard                            |
+| TakeScreenshot      | [point = ø, debug = False] | Point, Bool       | CV2 Image      | Take a screenshot (while a press is simulated if point != 0 |
 
 ## Example
 ```Python
@@ -65,7 +65,7 @@ myPhone.Destroy()
 |---|---|---|---|---|
 | Python | [Python](https://www.python.org/) | ``` sudo apt install python3 ``` | ``` sudo pacman -S python3 ``` |
 | ADB | [ADB](https://www.frandroid.com/android/rom-custom-2/403222_comment-telecharger-les-outils-adb-et-fastboot-sur-windows-macos-et-linux) | ``` sudo apt install adb ``` | ``` sudo pacman -S adb ``` |
-| OpenCV2 | [OpenCV2](https://opencv.org/) | ``` sudo apt install python3-opencv ``` | Install package from this [git](https://aur.archlinux.org/opencv2.git) | ``` pip3 install opencv-python ``` |
+| OpenCV2 | [OpenCV2](https://opencv.org/) | ``` sudo apt install python3-opencv ``` | Install package from this [git](https://aur.archlinux.org/pkgbase/opencv2/) | ``` pip3 install opencv-python ``` |
 
 ## Sources
 * [ADB Commands Source 1 (medium.com)](https://medium.com/@minamimunakata/how-to-take-a-screenshot-on-android-with-adb-on-windows-pc-d52f7603b1d2)
