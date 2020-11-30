@@ -62,12 +62,23 @@ class SmartPhone(object):
     
     def GetEventScreen(self):
         found = False
-        events = os.popen("{}adb -s {} shell getevent -lp 2>/dev/null | egrep -o \"(/dev/input/event\S+)\"".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV]))
+
+        # Get all events
+        events = []
+        e = "/dev/input/event"
+        output = os.popen("{}adb -s {} shell getevent -lp".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV]))
+        for line in output.readlines():
+            if e in line:
+                length = len(e) + 1
+                start = len(line) - length - 1
+                events.append(line[start:start+length])
+
+        # Wich is screen
         for event in events:
-            info = os.popen("{}adb -s {} shell getevent -lp {}".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], event[:-1]))
+            info = os.popen("{}adb -s {} shell getevent -lp {}".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], event))
             for i in info:
                 if "ABS_MT" in i:
-                    self.EVENTSCREEN = event[:-1]
+                    self.EVENTSCREEN = event
                     found = True
                     break
             if found:
@@ -109,7 +120,7 @@ class SmartPhone(object):
         with open("{}/events".format(self.PATH), "a") as f:
             f.write(ADBcommands)
         self.ADB("push {}/events /data/local/tmp/".format(self.PATH), True)
-        self.ADB("shell /data/local/tmp/sendevent-arm64 {} /data/local/tmp/events".format(self.EVENTSCREEN), True)
+        self.ADB("exec-out /data/local/tmp/sendevent-arm64 {} /data/local/tmp/events".format(self.EVENTSCREEN), True)
         os.remove("{}/events".format(self.PATH))
         self.eventuploaded = True
 
