@@ -48,8 +48,9 @@ class SmartPhone(object):
             self.Error("Wrong device index")
         self.CURR_DEV = index
 
-        # Upload : "sendevent-arm64"
+        # Upload : "sendevent-arm64" and add permissions
         self.ADB("push {}/sendevent-arm64 /data/local/tmp/".format(self.PATH), True)
+        self.ADB("shell chmod 777 /data/local/tmp/sendevent-arm64")
     
     def SetOffset(self, x, y):
         self.offset_x = x
@@ -115,6 +116,7 @@ class SmartPhone(object):
         with open("{}/events".format(self.PATH), "a") as f:
             f.write(ADBcommands)
         self.ADB("push {}/events /data/local/tmp/".format(self.PATH), True)
+        self.ADB("shell chmod 777 /data/local/tmp/events")
         self.ADB("exec-out /data/local/tmp/sendevent-arm64 {} /data/local/tmp/events".format(self.EVENTSCREEN), True)
         os.remove("{}/events".format(self.PATH))
         self.eventuploaded = True
