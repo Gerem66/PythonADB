@@ -149,29 +149,37 @@ class SmartPhone(object):
     
     # TouchScreen functions
     
-    def Press(self, x, y, duration = 1):
-        self.Swipe([[x, y, duration]])
+    #def Press(self, x, y, duration = 1):
+    #    self.Swipe([[x, y, duration]])
 
-    def Swipe(self, coords):
-        self.CheckType(coords, [int, float])
-        s = self.ADBPress(coords[0][0], coords[0][1])
-        s += self.ADBTimer(coords[0][2])
+    #def Swipe(self, coords):
+    #    self.CheckType(coords, [int, float])
+    #    s = self.ADBPress(coords[0][0], coords[0][1])
+    #    s += self.ADBTimer(coords[0][2])
 
-        for i in range(1, len(coords)):
-            step = max(abs(coords[i][0] - coords[i-1][0]), abs(coords[i][1] - coords[i-1][1]))
-            dt = float(coords[i][2]) / float(step)
-            dx = (coords[i][0] - coords[i-1][0]) / step
-            dy = (coords[i][1] - coords[i-1][1]) / step
-            for p in range(step):
-                nx = int(coords[i-1][0] + (dx * p))
-                ny = int(coords[i-1][1] + (dy * p))
-                s += self.ADBSet(nx, ny)
-                s += self.ADBTimer(dt)
+    #    for i in range(1, len(coords)):
+    #        step = max(abs(coords[i][0] - coords[i-1][0]), abs(coords[i][1] - coords[i-1][1]))
+    #        dt = float(coords[i][2]) / float(step)
+    #        dx = (coords[i][0] - coords[i-1][0]) / step
+    #        dy = (coords[i][1] - coords[i-1][1]) / step
+    #        for p in range(step):
+    #            nx = int(coords[i-1][0] + (dx * p))
+    #            ny = int(coords[i-1][1] + (dy * p))
+    #            s += self.ADBSet(nx, ny)
+    #            s += self.ADBTimer(dt)
 
-        s += self.ADBRelease()
-        self.SendMove(s)
+    #    s += self.ADBRelease()
+    #    self.SendMove(s)
 
-    #########    
+    def Press(self, x, y):
+        self.CheckType([x, y], int)
+        self.ADB("shell input tap {} {}".format(x + self.offset_x, y + self.offset_y))
+
+    def Swipe(self, x1, y1, x2, y2, duration = 1):
+        self.CheckType([x1, x2, y1, y2, duration], int)
+        self.ADB("shell input touchscreen swipe {} {} {} {} {}".format(x1 + self.offset_x, y1 + self.offset_y, x2 + self.offset_x, y2 + self.offset_y, int(duration*1000)))
+
+    #########
     # Other #
     #########
 
