@@ -63,7 +63,7 @@ class SmartPhone(object):
         e = "/dev/input/event"
         output = os.popen("{}adb -s {} shell getevent -lp".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV]))
         for line in output.readlines():
-            if e in line:
+            if e in line and not "could not get driver version" in line:
                 length = len(e) + 1
                 start = len(line) - length - 1
                 events.append(line[start:start+length])
