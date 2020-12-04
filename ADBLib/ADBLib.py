@@ -183,7 +183,15 @@ class SmartPhone(object):
     # Apps #
     ########
 
-    def ListApps(self):
+    def ListPackages(self):
+        apps = []
+        output = os.popen("{}adb -s {} shell pm list packages".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV]))
+        for line in output:
+            formated_line = line.replace("\n", "").replace("package:", "")
+            apps.append(formated_line)
+        return apps
+
+    def ListRunningApps(self):
         apps = []
         output = os.popen("{}adb -s {} shell dumpsys activity activities".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV]))
         for line in output.readlines():

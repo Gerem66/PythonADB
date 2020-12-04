@@ -36,7 +36,8 @@ myPhone = SP()
 | Swipe               | coords                     | List of TPoint    | ø              | Navigates the screen from point to point                    |
 | WriteText           | text                       | String            | ø              | Simulation of smatphone keyboard                            |
 | TakeScreenshot      | [point = ø, debug = False] | Point, Bool       | CV2 Image      | Take a screenshot (while a press is simulated if point != 0 |
-| ListApps            | ø                          | ø                 | List of String | Get all running applications on selected device             |
+| ListPackages        | ø                          | ø                 | List of String | Get all packages installed on selected device               |
+| ListRunningApps     | ø                          | ø                 | List of String | Get all running applications on selected device             |
 | RunApp              | appname                    | String            | ø              | Run application on selected device                          |
 
 ## Example
