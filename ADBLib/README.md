@@ -24,7 +24,7 @@ myPhone = SP()
 | Point               | x, y                       | Int, Int          | List           | E.g. : [250, 300]                                           |
 | TPoint              | x, y, duration             | Int, Int, Float   | List           | E.g. : [250, 300, 0.1]                                      |
 | **Class**           |                            |                   |                |                                                             |
-| SmartPhone          | ADB_Path [, index = 0]     | Str, Int          | ø              | Open ADB and select device, default selected device : 0     |
+| SmartPhone          | ADB_Path [, index = 0]     | String, Int       | ø              | Open ADB and select device, default selected device : 0     |
 | Destroy             | ø                          | ø                 | ø              | Destroy class, and remove remote files on android           |
 | **Class Settings**  |                            |                   |                |                                                             |
 | GetDevices          | ø                          | ø                 | List of String | Get all devices name                                        |
@@ -36,6 +36,8 @@ myPhone = SP()
 | Swipe               | coords                     | List of TPoint    | ø              | Navigates the screen from point to point                    |
 | WriteText           | text                       | String            | ø              | Simulation of smatphone keyboard                            |
 | TakeScreenshot      | [point = ø, debug = False] | Point, Bool       | CV2 Image      | Take a screenshot (while a press is simulated if point != 0 |
+| ListApps            | ø                          | ø                 | List of String | Get all running applications on selected device             |
+| RunApp              | appname                    | String            | ø              | Run application on selected device                          |
 
 ## Example
 ```Python
@@ -55,6 +57,11 @@ img = cv2.resize(img, (int(len(img[0]) / 4), int(len(img) / 4))) # Resize : reso
 cv2.imshow("test", img)                                          # Show popup with screenshot
 cv2.waitKey(0)                                                   # Wait to press key
 cv2.destroyAllWindows()                                          # Destroy window
+
+# List all applications runned
+print("\nApplications :")
+for app in myPhone.ListApps():
+    print("\t" + app)
 
 myPhone.Destroy()
 ```

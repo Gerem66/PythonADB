@@ -179,6 +179,23 @@ class SmartPhone(object):
         self.CheckType([x1, x2, y1, y2, duration], int)
         self.ADB("shell input touchscreen swipe {} {} {} {} {}".format(x1 + self.offset_x, y1 + self.offset_y, x2 + self.offset_x, y2 + self.offset_y, int(duration*1000)))
 
+    ########
+    # Apps #
+    ########
+
+    def ListApps(self):
+        apps = []
+        output = os.popen("{}adb -s {} shell dumpsys activity activities".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV]))
+        for line in output.readlines():
+            if "realActivity=" in line:
+                formated_line = line.replace("\n", "").replace("realActivity=", "").strip()
+                if not formated_line in apps:
+                    apps.append(formated_line)
+        return apps
+    
+    def RunApp(self, appname):
+        self.ADB("shell am start " + appname)
+
     #########
     # Other #
     #########
