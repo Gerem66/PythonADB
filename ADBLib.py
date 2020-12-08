@@ -21,7 +21,7 @@ class SmartPhone(object):
         self.EVENTSCREEN = ""
         self.LoadDevices()
         self.SetDevice(index)
-        self.GetEventScreen()
+        #self.GetEventScreen()
     
     def Destroy(self):
         self.ADB("shell rm /data/local/tmp/sendevent-arm64", True)
