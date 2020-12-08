@@ -84,9 +84,15 @@ class SmartPhone(object):
     # Private ADB functions #
     #########################
 
-    def ADB(self, arg, quiet = False):
-        q = " > "+os.devnull if quiet else ""
-        os.system("{}adb -s {} {}{}".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], arg, q))
+    #def ADB(self, arg, quiet = False):
+    #    q = " > "+os.devnull if quiet else ""
+    #    os.system("{}adb -s {} {}{}".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], arg, q))
+
+    def ADB(self, arg, sync = True):
+        if not sync:
+            os.popen("{}adb -s {} {}".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], arg))
+        else:
+            os.system("{}adb -s {} {}".format(self.ADB_PATH, self.DEVICES[self.CURR_DEV], arg))
 
     def ADBPress(self, x, y):
         s = "0003 003a 00000001\n"
@@ -146,6 +152,11 @@ class SmartPhone(object):
         img = imread(self.TMP_IMG).copy()
         os.remove(self.TMP_IMG)
         return img
+    
+    def TakeScreenshotWithPress(self, x, y):
+        self.ADB("shell input touchscreen swipe {} {} {} {} {}".format(x + self.offset_x, y + self.offset_y, x + self.offset_x, y + self.offset_y, 500), False)
+        time.sleep(0.6)
+        return self.TakeScreenshot()
     
     # TouchScreen functions
     
