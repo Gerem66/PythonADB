@@ -75,6 +75,12 @@ myPhone.Destroy()
 | ADB | [ADB](https://www.frandroid.com/android/rom-custom-2/403222_comment-telecharger-les-outils-adb-et-fastboot-sur-windows-macos-et-linux) | ``` sudo apt install adb ``` | ``` sudo pacman -S adb ``` |
 | OpenCV2 | [OpenCV2](https://opencv.org/) | ``` sudo apt install python3-opencv ``` | Install package from this [git](https://aur.archlinux.org/pkgbase/opencv2/) | ``` pip3 install opencv-python ``` |
 
+## TODO
+
+1. [] Set up an application cloning system (with adb or not)
+2. [] Find a faster way to retrieve screen data (currently ~1.3s)
+3. [] Make the c script usable by all devices
+
 ## Sources
 * [ADB Commands Source 1 (medium.com)](https://medium.com/@minamimunakata/how-to-take-a-screenshot-on-android-with-adb-on-windows-pc-d52f7603b1d2)
 * [ADB Record / Replay events (github : Cartucho)](https://github.com/Cartucho/android-touch-record-replay)
